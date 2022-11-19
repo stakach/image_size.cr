@@ -22,7 +22,7 @@ struct ImageSize
   # ```
   def self.get(bytes : Bytes) : ImageSize
     if self.is_webp bytes
-      self.get_webp bytes
+      raise "webp is not supported"
     else
       self.get_stbi bytes
     end
@@ -54,11 +54,6 @@ struct ImageSize
     self.new w, h, comp
   end
 
-  private def self.get_webp(bytes : Bytes) : ImageSize
-    LibWebP.WebPGetInfo bytes, bytes.size, out w, out h
-    self.new w, h
-  end
-
   private def self.stb_load(bytes : Bytes)
     ptr = LibStbi.stbi_load_from_memory bytes, bytes.size,
       out w, out h, out comp, 0
@@ -86,13 +81,6 @@ struct ImageSize
       out_bytes = Bytes.new output, len
     end
     out_bytes
-  end
-
-  private def self.webp_resize(bytes : Bytes, target : ImageSize) : Bytes
-    ptr = LibWebP.WebPDecodeRGB bytes, bytes.size, out w, out h
-    size = LibWebP.WebPResizeRGB ptr, w, h, w * 3, target.width, target.height,
-      100.0, out output
-    Bytes.new output, size
   end
 
   # Resizes an image from binary data.
@@ -130,7 +118,7 @@ struct ImageSize
     end
 
     if self.is_webp bytes
-      self.webp_resize bytes, self.new width, height
+      raise "webp is not supported"
     else
       self.stbi_resize bytes, self.new width, height
     end

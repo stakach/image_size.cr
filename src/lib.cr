@@ -7,10 +7,3 @@ lib LibStbi
   fun stbi_write_jpg_memory(width : LibC::Int, height : LibC::Int, component : LibC::Int, data : LibC::UChar*, quality : LibC::Float, output : LibC::UChar**) : LibC::Int
   fun stbi_failure_reason : LibC::Char*
 end
-
-@[Link(ldflags: "-L#{__DIR__}/../ext/libwebp/ -lwebp")]
-lib LibWebP
-  fun WebPGetInfo(data : LibC::UInt8T*, size : LibC::SizeT, width : LibC::Int*, height : LibC::Int*) : LibC::Int
-  fun WebPDecodeRGB(data : LibC::UInt8T*, size : LibC::SizeT, width : LibC::Int*, height : LibC::Int*) : LibC::UInt8T*
-  fun WebPResizeRGB(data : LibC::UInt8T*, width : LibC::Int, height : LibC::Int, stride : LibC::Int, target_width : LibC::Int, target_height : LibC::Int, quality : LibC::Float, output : LibC::UInt8T**) : LibC::SizeT
-end
